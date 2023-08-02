@@ -15,9 +15,7 @@ const createUser = (req, res) => {
 
 const getUsersEmail = (req, res, next) => {
   const { email } = req.body;
-  models.users
-  .selectByEmail(email)
-  .then(([users]) => {
+  models.users.selectByEmail(email).then(([users]) => {
     if (users != 0) {
       [req.user] = users;
       next();
@@ -27,4 +25,12 @@ const getUsersEmail = (req, res, next) => {
   });
 };
 
-module.exports = { createUser, getUsersEmail };
+const deleteSession = (req, res) => {
+  res
+  .cookie("token", null, {
+    httpOnly: true,
+  })
+  .send({ Message : "User disconnected" });
+};
+
+module.exports = { createUser, getUsersEmail, deleteSession };
