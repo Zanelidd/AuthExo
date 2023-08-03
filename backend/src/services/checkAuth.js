@@ -50,6 +50,7 @@ const verifyPassword = (req, res) => {
         res
           .status(401)
           .send("Message : Les informations renseignées sont incorrectes");
+    
       }
     })
     .catch((err) => {

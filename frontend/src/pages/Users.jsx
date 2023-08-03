@@ -18,10 +18,10 @@ export default function Users() {
     <div className={style.usersContainer}>
       {users.map((user) => {
         return (
-          <>
-            <p key={user.id}>{user.username}</p>
+          <div key={user.id}>
+            <p >{user.username}</p>
             <p>{user.email}</p>
-          </>
+          </div>
         );
       })}
     </div>

@@ -22,10 +22,13 @@ export default function Login() {
         { withCredentials: true }
       )
       .then((response) => {
-        setUser(response.data);
-        setTimeout(() => {
-          navigate("/users");
-        }, 500);
+        if (response.status == 200){
+
+          setUser(response.data);
+          setTimeout(() => {
+            navigate("/users");
+          }, 500);
+        }
       });
   };
 
