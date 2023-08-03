@@ -3,10 +3,21 @@ const router = express.Router();
 
 const userControllers = require("./controllers/userControllers");
 
-const { hashPass, verifyPassword } = require("./services/checkAuth");
+const {
+  hashPass,
+  verifyPassword,
+  verifyToken,
+} = require("./services/checkAuth");
+const schema = require("./services/joiValidator");
 
-router.post("/register", hashPass, userControllers.createUser);
+router.post("/register", [schema, hashPass], userControllers.createUser);
 router.post("/login", userControllers.getUsersEmail, verifyPassword);
-router.post("/logout",userControllers.deleteSession)
+
+//Protected Routes
+
+router.use(verifyToken);
+
+router.get("/users", userControllers.getAllUsers);
+router.post("/logout", userControllers.deleteSession);
 
 module.exports = router;

@@ -1,8 +1,18 @@
 const models = require("../models");
 
+const getAllUsers = (req, res) => {
+  models.users
+    .findAll()
+    .then(([rows]) => {
+      res.send(rows);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
 const createUser = (req, res) => {
   const user = req.body;
-  console.log(user);
   models.users
     .insert(user)
     .then(([results]) => {
@@ -15,22 +25,25 @@ const createUser = (req, res) => {
 
 const getUsersEmail = (req, res, next) => {
   const { email } = req.body;
-  models.users.selectByEmail(email).then(([users]) => {
+  models.users
+  .selectByEmail(email).then(([users]) => {
     if (users != 0) {
       [req.user] = users;
       next();
     } else {
-      res.sendStatus(401);
+      res.status(401).send("User not found in database");
     }
   });
 };
 
 const deleteSession = (req, res) => {
+  // créer un blacklist pour stocker le token
   res
-  .cookie("token", null, {
-    httpOnly: true,
-  })
-  .send({ Message : "User disconnected" });
+    .cookie("token", null, {
+      httpOnly: true,
+    })
+    .status(200)
+    .send({ Message: "User disconnected" });
 };
 
-module.exports = { createUser, getUsersEmail, deleteSession };
+module.exports = { createUser, getUsersEmail, deleteSession, getAllUsers };

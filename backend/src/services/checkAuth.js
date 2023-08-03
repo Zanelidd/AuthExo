@@ -37,7 +37,8 @@ const verifyPassword = (req, res) => {
         const payload = { sub: req.user.id };
         const token = jwt.sign(payload, process.env.TOKEN_SECRET);
 
-        delete req.user.password;
+        delete req.user.password_hash;
+        delete req.user.salt;
         res
           .status(200)
           .cookie("token", token, {
@@ -57,4 +58,21 @@ const verifyPassword = (req, res) => {
     });
 };
 
-module.exports = { hashPass, verifyPassword };
+const verifyToken = (req, res, next) => {
+  //implémenter la vérification avec les tokens de la blacklist, si pas présent dedans on valide
+ console.log(req.cookies);
+  if (req.cookies) {
+    jwt.verify(req.cookies.token, process.env.TOKEN_SECRET, (err, decode) => {
+      if (err) {
+        res.status(401).send("Vous devez vous connecter pour accéder au site");
+      } else {
+        req.token = decode;
+        next();
+      }
+    });   
+  } else {
+    res.status(401).send("Informations non valide");
+  }
+};
+
+module.exports = { hashPass, verifyPassword, verifyToken };
