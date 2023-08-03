@@ -1,0 +1,7 @@
+.navbarContainer{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 10vh;
+    width: 100vw;
+}
