@@ -7,11 +7,14 @@ export default function Register() {
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [repeatPassword, setRepeatPassword] = useState();
   const navigate = useNavigate();
 
   const onSubmit = (e) => {
     e.preventDefault();
-    axios
+    if(repeatPassword === password){
+
+      axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/register`, {
         username,
         email,
@@ -22,12 +25,15 @@ export default function Register() {
           setTimeout(() => {
             navigate("/");
           }, 500);
-        }else{
-          console.log("User Not registered")
+        } else {
+          console.log("User Not registered");
         }
       });
-  };
-  
+    }else{
+      alert("Les mots de passe doivent correspondre")
+    }
+    };
+    
   return (
     <>
       <div className={style.registerContainer}>
@@ -55,6 +61,7 @@ export default function Register() {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
+              pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
             />
           </label>
           <label htmlFor="password">
@@ -65,13 +72,35 @@ export default function Register() {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
+              pattern=".{8,}"
+              title="Eight or more characters"
+            />
+          </label>
+          <label htmlFor="password">
+            <input
+              type="password"
+              id="password"
+              placeholder="Repeat-Password"
+              onChange={(e) => {
+                setRepeatPassword(e.target.value);
+              }}
+              pattern=".{8,}"
+              title="Eight or more characters"
             />
           </label>
 
-          <button type="submit">S'inscrire</button>
+          <button type="submit">Incription</button>
         </form>
+        <button
+          type="button"
+          className={style.returnButton}
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Retour
+        </button>
       </div>
-      ;
     </>
   );
 }

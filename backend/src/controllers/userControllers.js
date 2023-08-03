@@ -39,7 +39,7 @@ const getUsersEmail = (req, res, next) => {
 const deleteSession = (req, res) => {
   // créer un blacklist pour stocker le token
   res
-    .cookie("token", null, {
+    .cookie("token", "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;", {
       httpOnly: true,
     })
     .status(200)

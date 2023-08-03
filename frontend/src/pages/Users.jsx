@@ -13,13 +13,13 @@ export default function Users() {
         setUsers(response.data);
       });
   }, []);
-  console.log(users);
+
   return (
     <div className={style.usersContainer}>
       {users.map((user) => {
         return (
           <>
-            <p>{user.username}</p>
+            <p key={user.id}>{user.username}</p>
             <p>{user.email}</p>
           </>
         );

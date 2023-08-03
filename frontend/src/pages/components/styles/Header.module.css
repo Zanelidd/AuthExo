@@ -5,3 +5,10 @@
     height: 10vh;
     width: 100vw;
 }
+
+.linkContainer{
+    width : 25vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

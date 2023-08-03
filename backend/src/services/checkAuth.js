@@ -45,7 +45,7 @@ const verifyPassword = (req, res) => {
             httpOnly: true,
             expires: new Date(Date.now() + 1000 * 60 * 60),
           })
-          .send({ user: { id: req.user.id }, token });
+          .send({ token, user: { id: req.user.id } });
       } else {
         res
           .status(401)
@@ -60,7 +60,7 @@ const verifyPassword = (req, res) => {
 
 const verifyToken = (req, res, next) => {
   //implémenter la vérification avec les tokens de la blacklist, si pas présent dedans on valide
- console.log(req.cookies);
+  console.log("token", req.cookies);
   if (req.cookies) {
     jwt.verify(req.cookies.token, process.env.TOKEN_SECRET, (err, decode) => {
       if (err) {
@@ -69,7 +69,7 @@ const verifyToken = (req, res, next) => {
         req.token = decode;
         next();
       }
-    });   
+    });
   } else {
     res.status(401).send("Informations non valide");
   }

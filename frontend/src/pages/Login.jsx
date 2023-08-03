@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import style from "./styles/Login.module.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import userContext from "../contexts/userContext";
 
 export default function Login() {
+  const { setUser } = useContext(userContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
@@ -20,8 +22,7 @@ export default function Login() {
         { withCredentials: true }
       )
       .then((response) => {
-        console.log(response)
-
+        setUser(response.data);
         setTimeout(() => {
           navigate("/users");
         }, 500);
